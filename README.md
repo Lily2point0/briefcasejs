@@ -4,8 +4,8 @@ Briefcase.js
 JS/jquery library to use Google Spreadsheet as a database
 
 ## What?
-Retrieving data from a Google spreadsheet is easy when there are only 2 column. 
-If the table is more complex, the data isn't formatted in an nice way.
+Retrieving data from a Google spreadsheet is easy when there are only 2 columns. 
+If the table is more complex, the data isn't formatted in an nice way, and therefore not easily usable.
 Briefcase makes a call to your Google Spreadsheet and returns clean data; JSON or CSV(*coming soon*)
 
 *See examples/getJSON for a quick start.*
