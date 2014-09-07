@@ -9,6 +9,7 @@ If the table is more complex, the data isn't formatted in an nice way, and there
 Briefcase makes a call to your Google Spreadsheet and returns clean data; JSON or CSV(*coming soon*)
 
 *See examples/getJSON for a quick start.*
+**Note: Using Google Spreadsheet as a database is not recommended for production work; but can be useful for quick prototypes and local applications**
 
 ## Setup
 1. Create your Google spreadsheet(or form, then > View Responses)
@@ -27,7 +28,7 @@ You can then call either:
 - **briefcase.getJSON()** > returns a clean JSON array with your data, 
 - **briefcase.getRawJSON()** > returns JSON without modification, 
 - **briefcase.getCSV()** (*coming soon*)
-Each of these functions accept 2 parameters: **options** (an Object), and **callback** (your callback function).
+Each of these functions accepts 2 parameters: **options** (an Object), and **callback** (your callback function).
 
 Available options:
 - **id**: your spreadsheet id // mandatory
