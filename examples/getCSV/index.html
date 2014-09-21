@@ -14,10 +14,10 @@
   <div>The data retrieved with Briefcase:</div>
 	<div class="content" style="white-space:pre-wrap;"></div>
   <script type="text/javascript">
-    briefcase.getJSON({ id:"1nLQeSvCwV9EorcEFuNibvmqDEMz-cDwIEfmyJ6TpJsI" }, printElements);
+    briefcase.getCSV({ id:"1nLQeSvCwV9EorcEFuNibvmqDEMz-cDwIEfmyJ6TpJsI" }, printElements);
 
     function printElements(data) {
-      $('.content').text(JSON.stringify(data, null, "\t"));
+      $('.content').text(data);
     }
   </script>
 </body>
