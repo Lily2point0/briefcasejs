@@ -7,7 +7,7 @@
 */
 !function(){
 	var briefcase = {
-		version: "0.0.3",
+		version: "1.0.0",
 		getRawJSON: function(options, callback){
 			format = 'raw';
 			init(compareOptions(options), callback);
@@ -46,9 +46,23 @@
 
 	function getData(path, callback){
 		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				formatData(JSON.parse(xmlhttp.responseText), format, callback);
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4) {
+				if(xmlhttp.status == 200) {
+					formatData(JSON.parse(xmlhttp.responseText), format, callback);
+				} else {
+					var div = document.createElement("div");
+    				div.innerHTML = xmlhttp.responseText;
+
+					var error_msg = {
+						"responseType":"error", 
+						"responseStatus":xmlhttp.status, 
+						"responseMessage": div.innerText
+					};
+
+
+					formatData(error_msg, "error", callback);
+				}	
 			}
 		}
 		xmlhttp.open("GET", path, true);
@@ -70,6 +84,9 @@
 				callback(formatCSV(d.feed.entry));
 			break;
 
+			case 'error':
+				callback(data);
+			break;	
 
 			default:
 				callback(d.feed.entry);

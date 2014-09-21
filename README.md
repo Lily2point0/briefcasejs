@@ -43,4 +43,5 @@ Available options:
 - [x] Get rid of jQuery
 - [x] Implement CSV option
 - [ ] Add file download option
-- [ ] Add response when error
+- [ ] Add XML option (?)
+- [x] Add response when error
