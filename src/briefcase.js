@@ -7,7 +7,7 @@
 */
 !function(){
 	var briefcase = {
-		version: "0.0.2",
+		version: "0.0.3",
 		getRawJSON: function(options, callback){
 			format = 'raw';
 			init(compareOptions(options), callback);
@@ -45,19 +45,14 @@
 	}
 
 	function getData(path, callback){
-        $.when($.ajax({
-            url: path,
-            type: 'GET',
-            crossDomain: true,
-            dataType:'json',
-        }).done(function() {
-        	console.log('done');
-        }).fail(function() {
-            console.log('error');
-        }))
-        .then(function(data){
-            formatData(data, format, callback);
-        });
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				formatData(JSON.parse(xmlhttp.responseText), format, callback);
+			}
+		}
+		xmlhttp.open("GET", path, true);
+		xmlhttp.send();
 	}
 
 	function formatData(data, format, callback) {

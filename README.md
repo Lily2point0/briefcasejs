@@ -1,7 +1,7 @@
 Briefcase.js
 ===========
 
-JS/jquery library to use Google Spreadsheet as a database
+Javascript library to use Google Spreadsheet as a database
 
 ## What?
 Retrieving data from a Google spreadsheet is easy when there are only 2 columns. 
@@ -9,6 +9,7 @@ If the table is more complex, the data isn't formatted in an nice way, and there
 Briefcase makes a call to your Google Spreadsheet and returns clean data; JSON or CSV
 
 *See examples/getJSON for a quick start.*
+
 **Note: Using Google Spreadsheet as a database is not recommended for production work; but can be useful for quick prototypes and local applications**
 
 ## Setup
@@ -20,7 +21,6 @@ Briefcase makes a call to your Google Spreadsheet and returns clean data; JSON o
   * The key that is in the URL when you publish it (i.e. *1nLQeSvCwV9EorcEvmqDEMz-cyJ6TpJsI*)
 
 ## Use
-***Note: At the moment, Briefcase.js requires jQuery (tested with 1.11.1).***
 
 Include briefcase.js
 
@@ -40,7 +40,7 @@ Available options:
 
 
 ### *TODO*
-- [ ] Get rid of jQuery
+- [x] Get rid of jQuery
 - [x] Implement CSV option
 - [ ] Add file download option
 - [ ] Add response when error
