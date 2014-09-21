@@ -6,7 +6,7 @@ JS/jquery library to use Google Spreadsheet as a database
 ## What?
 Retrieving data from a Google spreadsheet is easy when there are only 2 columns. 
 If the table is more complex, the data isn't formatted in an nice way, and therefore not easily usable.
-Briefcase makes a call to your Google Spreadsheet and returns clean data; JSON or CSV(*coming soon*)
+Briefcase makes a call to your Google Spreadsheet and returns clean data; JSON or CSV
 
 *See examples/getJSON for a quick start.*
 **Note: Using Google Spreadsheet as a database is not recommended for production work; but can be useful for quick prototypes and local applications**
@@ -27,7 +27,7 @@ Include briefcase.js
 You can then call either: 
 - **briefcase.getJSON()** > returns a clean JSON array with your data, 
 - **briefcase.getRawJSON()** > returns JSON without modification, 
-- **briefcase.getCSV()** (*coming soon*)
+- **briefcase.getCSV()** > returns string of comma separated values
 Each of these functions accepts 2 parameters: **options** (an Object), and **callback** (your callback function).
 
 Available options:
@@ -38,6 +38,8 @@ Available options:
 - **showTimestamp**: if you're using a form, whether to retrieve associated timestamp or not // default is false. 
 
 
-## *TODO*
+### *TODO*
 - [ ] Get rid of jQuery
-- [ ] Implement CSV option
+- [x] Implement CSV option
+- [ ] Add file download option
+- [ ] Add response when error

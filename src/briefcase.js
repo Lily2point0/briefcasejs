@@ -7,7 +7,7 @@
 */
 !function(){
 	var briefcase = {
-		version: "0.0.1",
+		version: "0.0.2",
 		getRawJSON: function(options, callback){
 			format = 'raw';
 			init(compareOptions(options), callback);
@@ -99,40 +99,78 @@
                     var entry_value = entry[i][key].$t;
                     
                     if(config.type == "form") {
-	                    if(category == config.leftColumnTitle) {
-	                    	item.title = entry_value;
-	                    	items.push(item);
-	                    } else {
-	                    	if(category != "timestamp") {
-	                    		value.name = category.toString();
-	                    		value.value = entry_value;
-	                        	values.push(value);
-	                    	} else {
-	                    		ts = entry_value;
-	                    	}                        
-	                    }
-	                } else {
-	                	if(category == config.leftColumnTitle) {
-	                        item.title = entry_value;
-	                        items.push(item);
-	                    } else {
-	                        value.name = category.toString();
-	                    		value.value = entry_value;
-	                        values.push(value);
-	                    }
-	                }
-                }
+						if(category == config.leftColumnTitle) {
+							item.title = entry_value;
+							items.push(item);
+						} else {
+							if(category != "timestamp") {
+								value.name = category.toString();
+								value.value = entry_value;
+								values.push(value);
+							} else {
+								ts = entry_value;
+							}
+						}
+					} else {
+						if(category == config.leftColumnTitle) {
+							item.title = entry_value;
+							items.push(item);
+						} else {
+							value.name = category.toString();
+							value.value = entry_value;
+							values.push(value);
+						}
+					}
+				}
             });
 
             items[i].categories = values;
-            if(config.type == "form" && config.showTimeStamp) items[i].timestamp = ts;    
+            if(config.type == "form" && config.showTimeStamp) items[i].timestamp = ts;
         }
 
         return items;
 	}
 
 	function formatCSV(entry) {
-		return "to be done";
+		var items = [];
+
+		for(var i = 0; i<entry.length; i++) {
+			var titles = [];
+            var values = [];
+            Object.keys(entry[i]).forEach(function (key) {
+
+				if(key.toString().substring(0,4) == "gsx$") {
+                    var value = [];
+
+                    var category = key.toString().substring(4, key.toString().length);
+                    var entry_value = entry[i][key].$t;
+
+                    if(config.type == "form" && !config.showTimeStamp) {
+                    	if(category != "timestamp") {
+                    		titles.push(category);
+                    		values.push(entry_value);
+                    	}
+                    } else {
+                    	titles.push(category);
+                    	values.push(entry_value);
+                    }
+                }
+            });
+
+            items.push(values);
+        }
+
+        items.splice(0, 0, titles);
+
+        var csvRows = [];
+
+		for(var j=0; j < items.length; j++){
+			csvRows.push(items[j].join(','));
+		}
+
+		var csvString = csvRows.join("\n");
+		
+		return csvString;
 	}
 
 	this.briefcase = briefcase;
