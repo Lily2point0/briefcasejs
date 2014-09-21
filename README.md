@@ -28,6 +28,7 @@ You can then call either:
 - **briefcase.getJSON()** > returns a clean JSON array with your data, 
 - **briefcase.getRawJSON()** > returns JSON without modification, 
 - **briefcase.getCSV()** > returns string of comma separated values
+
 Each of these functions accepts 2 parameters: **options** (an Object), and **callback** (your callback function).
 
 Available options:
