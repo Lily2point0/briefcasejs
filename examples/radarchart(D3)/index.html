@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>Barcamp radarchart demo</title>
+    <script type="text/javascript" src="../../src/briefcase.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- D3 library from https://github.com/mbostock/d3 -->
+    <script type="text/javascript" src="js/d3/d3.min.js"></script>
+    <!-- Radarchart library for D3 from https://github.com/alangrafu/radar-chart-d3-->
+    <script type="text/javascript" src="js/radarchart.min.js"></script>
+
+    <style>
+      body {
+          /*overflow: hidden;*/
+          margin: 0;
+          font-size: 14px;
+          font-family: "Helvetica Neue", Helvetica;
+        }
+
+      .legend text {
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .legend text.disabled {
+        cursor: pointer;
+        fill: rgb(200,200,200);
+        text-decoration: line-through;
+      }
+
+
+      #viz svg {
+        position : absolute;
+        top: 170px;
+      }
+
+      #chart {
+        width: 600px;
+        margin : 25px auto;
+      }
+
+      .rank {
+        position: absolute;
+        right: 50px;
+        width: 300px;
+        top: 50px;
+      }
+
+      .percent {
+        display: inline-block;
+        float: right;
+      }
+
+       .add {
+          width:250px;
+          height:40px;
+          background-color: rgb(214, 39, 40);
+          cursor: pointer;
+          text-align: center;
+          color: white;
+          padding-top:20px;
+          margin:40px 0 40px 50px;
+        }
+
+        .add:hover {
+          background-color: rgb(255, 152, 150);
+        } 
+    </style>
+   
+</head>
+<body>
+  <iframe src="https://docs.google.com/spreadsheets/d/1E2uluTjqmf8Y_kzkFR0LHi7Z8YbccLtcoOzmEun55hk/pubhtml" width="606" height="150" scrolling="no" frameborder="0"></iframe>
+  <div class="content"></div>
+  <div id="viz"></div>
+  <div id="chart"></div>
+
+    <script type="text/javascript">
+      var dataset = [];
+      var LegendOptions = [];
+
+      var w = 500,
+          h = 500;
+
+      var chartOptions = {
+        w: w,
+        h: h,
+        radius: 1,
+        maxValue: 6,
+        levels: 6,
+        color: d3.scale.category20(),
+        fontSize: 15
+      };
+
+      var colorscale = d3.scale.category20();
+
+      briefcase.getJSON(
+        {
+          id:"1E2uluTjqmf8Y_kzkFR0LHi7Z8YbccLtcoOzmEun55hk",
+          leftColumnTitle: "friends"
+        },
+        function(data){
+          var formatted_data = data;
+
+          for(var i = 0; i<formatted_data.length; i++) {
+            LegendOptions.push(formatted_data[i].title);
+
+            var items = [];
+
+            for (var j = 0; j < formatted_data[i].categories.length; j++) {
+                var c = formatted_data[i].categories;
+
+                var item = {};
+                item.axis = c[j].name;
+                item.value = c[j].value;
+                items.push(item);
+            } 
+            dataset.push(items);
+          }
+          RadarChart.draw("#chart", dataset, chartOptions);
+          addLegend(LegendOptions);
+        }
+      );
+
+      function addLegend(legOptions) {
+        console.log("addLegend");
+        var svg = d3.select('#viz')
+            .append('svg')
+            .attr("width", 300)
+            .attr("height", h);
+
+        //Create the title for the legend
+        var text = svg.append("text")
+            .attr("class", "title")
+            .attr('transform', 'translate(90,0)') 
+            .attr("x", 10)
+            .attr("y", 10)
+            .attr("font-size", "12px")
+            .attr("fill", "#404040")
+            .text("Friends");
+                
+        //Initiate Legend   
+        var legend = svg.append("g")
+            .attr("class", "legend")
+            .attr("height", 100)
+            .attr("width", 200)
+            .attr('transform', 'translate(90,20)');
+
+            //Create colour squares
+            legend.selectAll('rect')
+              .data(LegendOptions)
+              .enter()
+              .append("rect")
+              .attr("x", 10)
+              .attr("y", function(d, i){ return i * 20;})
+              .attr("width", 10)
+              .attr("height", 10)
+              .style("fill", function(d, i){ return colorscale(i);});
+
+            //Create text next to squares
+            legend.selectAll('text')
+              .data(LegendOptions)
+              .enter()
+              .append("text")
+              .attr("x", 25)
+              .attr("y", function(d, i){ return i * 20 + 9;})
+              .attr("font-size", "11px")
+              .attr("fill", "#737373")
+              .text(function(d) { return d; });
+
+
+        //Adding interaction on legend
+        $(".legend text").each(function(e){
+            var index = e;
+            $(this).on('mouseover', function(){
+                $("#chart polygon.radar-chart-serie"+index)[0]["__onmouseover"]();
+            });
+
+            $(this).on('mouseout', function(){
+                $("#chart polygon.radar-chart-serie"+index)[0]["__onmouseout"]();
+            });
+
+            $(this).on('click', function(){
+                var displayOption = "";
+                ($("#chart .radar-chart-serie"+index).css("display") == "none")? (displayOption = "inherit") : (displayOption = "none");
+                $("#chart .radar-chart-serie"+index).css("display", displayOption);
+
+                if(displayOption == "none") {
+                    $(this).attr("class","disabled");
+                } else {
+                    $(this).removeAttr("class");
+                }
+
+            });
+        });
+      }
+    </script>
+</body>
+</html>
