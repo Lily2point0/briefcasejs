@@ -36,7 +36,7 @@ Available options:
 - **type**: either "spreadsheet" or "form" //default is "spreadsheet", "form" is to be used if your spreadsheet is a Google Form responses spreadsheet.
 - **sheetNumber**: the sheet to use in your spreadsheet // default is 1
 - **leftColumnTitle**: the title of the column that contains the list of your items // default is "item", mandatory, cannot be left empty
-- **showTimestamp**: if you're using a form, whether to retrieve associated timestamp or not // default is false. 
+- **showTimeStamp**: if you're using a form, whether to retrieve associated timestamp or not // default is false. 
 
 
 ### *TODO*
