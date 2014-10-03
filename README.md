@@ -20,6 +20,8 @@ Briefcase makes a call to your Google Spreadsheet and returns clean data; JSON o
 3. Get the id
   * The key that is in the URL when you publish it (i.e. *1nLQeSvCwV9EorcEvmqDEMz-cyJ6TpJsI*)
 
+For more detailed instructions, see [this blog post](http://lilydev.wordpress.com/2014/10/03/using-google-drive-as-your-database/)  
+
 ## Use
 
 Include briefcase.js
