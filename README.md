@@ -39,11 +39,12 @@ Available options:
 - **sheetNumber**: the sheet to use in your spreadsheet // default is 1
 - **leftColumnTitle**: the title of the column that contains the list of your items // default is "item", mandatory, cannot be left empty
 - **showTimeStamp**: if you're using a form, whether to retrieve associated timestamp or not // default is false. 
+- **download**: whether to download a JSON or CSV file from the spreadsheet  // default is false. Please note this option is only available in Chrome, Firefox and Opera.
 
 
 ### *TODO*
 - [x] Get rid of jQuery
 - [x] Implement CSV option
-- [ ] Add file download option
+- [x] Add file download option
 - [ ] Add XML option (?)
 - [x] Add response when error

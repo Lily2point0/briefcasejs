@@ -26,7 +26,8 @@
 		type: "spreadsheet",
 		sheetNumber: 1,
 		leftColumnTitle:"item",
-		showTimeStamp: false
+		showTimeStamp: false,
+		download: false
 	},
 	format;
 
@@ -41,6 +42,7 @@
 				config[i] = options[i];
 			}
 		});
+		console.log(config);
 		return config;
 	}
 
@@ -74,6 +76,9 @@
 		switch(format) {
 			case 'raw':
 				callback(d);
+				if(config.download) {
+		        	createDownloadFile(d, 'application/json');
+		        }
 			break;
 
 			case 'json':
@@ -140,6 +145,10 @@
             if(config.type == "form" && config.showTimeStamp) items[i].timestamp = ts;
         }
 
+        if(config.download) {
+        	createDownloadFile(items, 'application/json');
+        }
+
         return items;
 	}
 
@@ -181,8 +190,31 @@
 		}
 
 		var csvString = csvRows.join("\n");
+
+		if(config.download) {
+        	createDownloadFile(csvString, 'text/csv');
+        }
 		
 		return csvString;
+	}
+
+	function createDownloadFile(data, mime) {
+		var file, fileformat;
+
+		if(format == 'json' || format == 'raw') {
+			file = [JSON.stringify(data, null, "\t")];	
+			fileformat = 'json';
+		} else {
+			file = [data];
+			fileformat = 'csv'
+		}
+		var blobForFile = new Blob(file, {type : mime});
+		var downloadLink = window.URL.createObjectURL(blobForFile);
+
+		var download = document.createElement("a");
+		download.setAttribute('href', downloadLink);
+		download.setAttribute('download', "briefcaseData."+fileformat);
+		download.click();		
 	}
 
 	this.briefcase = briefcase;

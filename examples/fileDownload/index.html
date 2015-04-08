@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>Briefcase JS - example</title>
+    <script type="text/javascript" src="../../src/briefcase.min.js"></script>
+   
+</head>
+<body>
+  <div>This page will automatically download the JSON file from the example spreadsheet.<br>
+    try <strong>.getCSV()</strong> and </strong>.getRawJSON()</strong> for different results.
+  </div>
+  <script type="text/javascript">
+    briefcase.getJSON({ id:"1nLQeSvCwV9EorcEFuNibvmqDEMz-cDwIEfmyJ6TpJsI", download:true }, function(data){return;});
+  </script>
+</body>
+</html>
