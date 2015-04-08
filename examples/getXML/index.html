@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>Briefcase JS - example</title>
+    <script type="text/javascript" src="../../src/briefcase.min.js"></script>
+   
+</head>
+<body>
+  <div>The published spreadsheet:</div>
+  <iframe src="https://docs.google.com/spreadsheets/d/1nLQeSvCwV9EorcEFuNibvmqDEMz-cDwIEfmyJ6TpJsI/pubhtml" width="505" height="150" scrolling="no" frameborder="0"></iframe>
+
+  <div>The data retrieved with Briefcase:</div>
+	<div id="content" style="white-space:pre-wrap;"></div>
+  <script type="text/javascript">
+    briefcase.getXML({ id:"1nLQeSvCwV9EorcEFuNibvmqDEMz-cDwIEfmyJ6TpJsI"}, printElements);
+
+    function printElements(data) {
+      document.getElementById("content").innerText = data;
+    }
+  </script>
+</body>
+</html>

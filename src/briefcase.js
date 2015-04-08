@@ -19,6 +19,10 @@
 		getCSV:function(options, callback) {
 			format = 'csv';
 			init(compareOptions(options), callback);
+		},
+		getXML:function(options, callback) {
+			format = 'xml';
+			init(compareOptions(options), callback);
 		}
 	},
 	config = {
@@ -42,7 +46,7 @@
 				config[i] = options[i];
 			}
 		});
-		console.log(config);
+		
 		return config;
 	}
 
@@ -87,6 +91,10 @@
 
 			case 'csv':
 				callback(formatCSV(d.feed.entry));
+			break;
+
+			case 'xml':
+				callback(formatXML(d.feed.entry));
 			break;
 
 			case 'error':
@@ -148,7 +156,6 @@
         if(config.download) {
         	createDownloadFile(items, 'application/json');
         }
-
         return items;
 	}
 
@@ -198,15 +205,77 @@
 		return csvString;
 	}
 
+	function formatXML(entry) {
+		var xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<data>\n";
+		var items = "";
+		var categories = "";
+		var ts =""
+
+        for(var i = 0; i<entry.length; i++) {
+            var values = [];
+            var item = "\t<item>\n";
+            var cat = "";
+
+            Object.keys(entry[i]).forEach(function (key) {
+
+                if(key.toString().substring(0,4) == "gsx$") {
+
+                    var category = key.toString().substring(4, key.toString().length);
+                    var entry_value = entry[i][key].$t;
+                    
+                    if(config.type == "form") {
+						if(category == config.leftColumnTitle) {
+							item += "\t\t<title>" + entry_value + "</title>\n";
+						} else {
+							if(category != "timestamp") {
+								cat += "\t\t\t<category name=\""  + category.toString() + "\">" + entry_value + "</category>\n";
+							} else {
+								ts = "\t\t<timestamp>"+ entry_value + "</timestamp>\n";
+							}
+						}
+					} else {
+						if(category == config.leftColumnTitle) {
+							item += "\t\t<title>" + entry_value + "</title>\n";
+						} else {
+							cat += "\t\t\t<category name=\""  + category.toString() + "\">" + entry_value + "</category>\n";
+						}
+
+
+					}
+				}
+				categories = "\t\t<categories>\n"+cat+"\t\t</categories>\n";	
+
+				if(config.type == "form" && config.showTimeStamp) {
+					items = item + ts + categories + "\t</item>\n";
+				} else {
+					items = item + categories + "\t</item>\n";
+				}
+            });			
+			
+			xmlText+= items;
+        }
+
+        xmlText += "</data>"
+
+        if(config.download) {
+        	createDownloadFile(xmlText, 'text/xml');
+        }
+
+        return xmlText;
+	}
+
 	function createDownloadFile(data, mime) {
 		var file, fileformat;
 
 		if(format == 'json' || format == 'raw') {
 			file = [JSON.stringify(data, null, "\t")];	
 			fileformat = 'json';
+		} else if (format == 'csv') {
+			file = [data];
+			fileformat = 'csv';
 		} else {
 			file = [data];
-			fileformat = 'csv'
+			fileformat = 'xml';
 		}
 		var blobForFile = new Blob(file, {type : mime});
 		var downloadLink = window.URL.createObjectURL(blobForFile);
